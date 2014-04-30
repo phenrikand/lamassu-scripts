@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+mkdir -p $HOME/archive
+BACKUP_FILE=$HOME/archive/wallet-$(date -u "+%Y-%m-%d_%H-%M").bak
+EMAIL_ADDRESS=$(cat $HOME/.lamassu-backup.dat)
+bitcoind backupwallet $BACKUP_FILE
+gpg --bash --trust-model always -er $EMAIL_ADDR $BACKUP_FILE
+rm $BACKUP_FILE
+export EMAIL="Bitcoin Backup <noreply@lamassu.is>""
+echo "Attached is your encrypted bitcoind backup." | \
+mutt -s "Encrypted bitcoind backup" -a $BACKUP_FILE.gpg -- $EMAIL_ADDR
